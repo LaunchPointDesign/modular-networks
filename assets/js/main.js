@@ -23,7 +23,7 @@
   }));
 
   /* ---------- Section active in nav ---------- */
-  const sectionIds = ['solutions','process','about','contact'];
+  const sectionIds = ['process','solutions','about','vision','contact'];
   const linkMap = new Map(
     [...document.querySelectorAll('[data-link]')].map(a => [a.dataset.link, a])
   );
@@ -51,7 +51,7 @@
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
 
   // Default reveal targets
-  document.querySelectorAll('.section-head, .about-copy, .cta-final .container > *')
+  document.querySelectorAll('.section-head, .about-copy, .founder-card, .philosophy-grid, .promise-card, .vision-grid, .cta-final .container > *')
     .forEach(el => { el.classList.add('reveal'); revealIO.observe(el); });
 
   // Staggered groups — cards flow in one after another
