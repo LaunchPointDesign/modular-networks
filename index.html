@@ -5,8 +5,22 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Modular Networks - Network consulting for growing businesses</title>
 <meta name="description" content="Modular Networks helps growing businesses evaluate, design, deploy, monitor, and support practical network foundations." />
-<link rel="icon" type="image/jpeg" href="assets/images/Transparent_Logo.jpeg">
-<link rel="apple-touch-icon" href="assets/images/Transparent_Logo.jpeg">
+<link rel="icon" type="image/jpeg" href="assets/images/Transparent.svg>
+<link rel="apple-touch-icon" href="assets/images/Transparent.svg>
+<script>
+  (() => {
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+    const resetScroll = () => window.scrollTo(0, 0);
+    resetScroll();
+    window.addEventListener('pageshow', resetScroll);
+    window.addEventListener('load', () => {
+      resetScroll();
+      setTimeout(resetScroll, 0);
+      setTimeout(resetScroll, 120);
+    });
+  })();
+</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,7 +34,7 @@
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="#top" class="brand" aria-label="Modular Networks, home">
-      <img class="brand-logo" src="assets/images/Transparent.svg" alt="" width="500" height="500">
+      <img class="brand-logo" src="assets/images/Transparent.svg" alt="Modular Networks" width="150" height="150">
     </a>
 
     <nav class="nav-links" aria-label="Primary">
@@ -313,10 +327,9 @@
     <h2 id="cta-h" class="h-section" style="margin-top:16px">Start with a network evaluation.</h2>
     <p class="lead">A structured evaluation is the clearest way to understand the environment, identify the business problem, and decide what should happen next.</p>
     <div class="cta-final-actions">
-      <a class="btn btn-primary" href="mailto:hello@modularnetworksllc.com?subject=Book%20Network%20Evaluation">Book Evaluation <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      <a class="btn btn-ghost" href="mailto:hello@modularnetworksllc.com">Send a note</a>
+      <a class="btn btn-primary" href="mailto:maurice.r.burt@gmail.com?subject=Book%20Network%20Evaluation">Book Evaluation <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a class="btn btn-ghost" href="mailto:maurice.r.burt@gmail.com">Send a note</a>
     </div>
-    <div class="cta-contact-row"><span>Reach out directly:</span><a href="mailto:hello@modularnetworksllc.com">hello@modularnetworksllc.com</a></div>
   </div>
 </section>
 
@@ -325,9 +338,18 @@
 <footer class="footer">
   <div class="container footer-inner">
     <div class="footer-left">
-      <img class="footer-logo" src="assets/images/Transparent.svg" alt="Modular Networks" width="500" height="500">
+      <img class="footer-logo" src="assets/images/Transparent.svg" alt="Modular Networks" width="150" height="150">
     </div>
-    <div class="footer-links"><a href="mailto:hello@modularnetworksllc.com">Email</a></div>
+    <div class="footer-links" aria-label="Footer contact links">
+      <a class="footer-icon-link" href="https://www.linkedin.com/in/maurice-burt-64329b207/" target="_blank" rel="noopener noreferrer" aria-label="Maurice Burt on LinkedIn">
+        <svg class="footer-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>
+        <span>LinkedIn</span>
+      </a>
+      <a class="footer-icon-link" href="mailto:maurice.r.burt@gmail.com" aria-label="Email Maurice Burt">
+        <svg class="footer-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><path d="m22 7-10 6L2 7"/></svg>
+        <span>Email</span>
+      </a>
+    </div>
   </div>
 </footer>
 

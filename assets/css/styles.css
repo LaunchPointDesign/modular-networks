@@ -15,6 +15,7 @@
   --accent:      #0A66FF;          /* electric blue */
   --accent-ink:  #0549c2;
   --accent-soft: #e8efff;
+  --logo-blue:   #19c8cd;
 
   /* Type */
   --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
@@ -173,20 +174,38 @@ h1,h2,h3,h4 {
   top: 0; left: 0; right: 0;
   z-index: 50;
   padding: 14px 0;
-  transition: background .3s var(--ease), border-color .3s var(--ease), backdrop-filter .3s;
+  background: transparent;
   border-bottom: 1px solid transparent;
+  pointer-events: none;
+  transition: padding .25s var(--ease);
 }
 .nav.is-scrolled {
-  background: rgba(255,255,255,.78);
-  backdrop-filter: saturate(180%) blur(14px);
-  -webkit-backdrop-filter: saturate(180%) blur(14px);
-  border-bottom-color: var(--line);
+  padding: 8px 0;
+  background: transparent;
+  border-bottom-color: transparent;
 }
 .nav-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
+  /* min-height: 52px; */
+  pointer-events: auto;
+  transition: min-height .25s var(--ease), max-width .25s var(--ease), padding .25s var(--ease), background .25s var(--ease), border-color .25s var(--ease), box-shadow .25s var(--ease);
+}
+.nav.is-scrolled .nav-inner {
+  min-height: 38px;
+  max-width: min(980px, calc(100% - 28px));
+  padding: 0 10px 0 14px;
+  border: 1px solid rgba(230,233,239,.9);
+  border-radius: 999px;
+  background: rgba(255,255,255,.9);
+  box-shadow: 0 18px 52px -32px rgba(11,30,63,.45);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+}
+.nav.is-scrolled .brand-logo {
+  max-height: 60px;
 }
 .brand {
   display: inline-flex;
@@ -197,8 +216,8 @@ h1,h2,h3,h4 {
   letter-spacing: -0.01em;
 }
 .brand-logo {
-  width: 142px;
-  height: 42px;
+  width: 150px;
+  height: auto;
   object-fit: contain;
   object-position: left center;
 }
@@ -216,7 +235,11 @@ h1,h2,h3,h4 {
   font-weight: 500;
   padding: 8px 14px;
   border-radius: 999px;
-  transition: color .2s, background .2s;
+  transition: color .2s, background .2s, padding .25s var(--ease), font-size .25s var(--ease);
+}
+.nav.is-scrolled .nav-link {
+  font-size: 13px;
+  padding: 4px 9px;
 }
 .nav-link:hover { color: var(--ink); }
 .nav-link.is-active { color: var(--ink); }
@@ -232,6 +255,11 @@ h1,h2,h3,h4 {
 @keyframes underline { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
 .nav-cta { margin-left: 8px; height: 38px; padding: 0 16px; font-size: 14px; }
+.nav.is-scrolled .nav-cta {
+  height: 28px;
+  padding: 0 11px;
+  font-size: 13px;
+}
 
 .nav-toggle { display: none; }
 .mobile-menu { display: none; }
@@ -247,6 +275,7 @@ h1,h2,h3,h4 {
   }
   .mobile-menu {
     display: block;
+    pointer-events: auto;
     position: fixed; inset: 60px 12px auto 12px;
     background: #fff;
     border: 1px solid var(--line);
@@ -780,19 +809,42 @@ section { position: relative; }
 }
 .footer-left { display: flex; align-items: center; gap: 12px; color: var(--ink-soft); font-size: 13.5px; }
 .footer-logo {
-  width: 118px;
-  height: 36px;
+  width: 150px;
+  height: 150px;
   object-fit: contain;
   object-position: left center;
 }
-.footer-links { display: flex; gap: 22px; font-size: 13.5px; color: var(--ink-soft); }
-.footer-links a:hover { color: var(--ink); }
+.footer-links { display: flex; gap: 12px; flex-wrap: wrap; font-size: 13.5px; color: var(--ink-soft); }
+.footer-icon-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink-2);
+  font-weight: 500;
+  transition: color .2s var(--ease), border-color .2s var(--ease), background .2s var(--ease);
+}
+.footer-icon-link:hover {
+  color: var(--accent);
+  border-color: var(--accent-soft);
+  background: var(--accent-soft);
+}
+.footer-icon { flex-shrink: 0; }
+
+@media (max-width: 520px) {
+  .footer-inner { align-items: flex-start; }
+  .footer-logo { width: 120px; height: 120px; }
+}
 
 /* -------------------------------------------------------------
    Misc — SVG hero grid
 ------------------------------------------------------------- */
 .node-dot { fill: var(--ink); opacity: .14; }
-.node-dot.on { fill: var(--accent); opacity: 1; }
+.node-dot.on { fill: var(--logo-blue); opacity: 1; }
 .node-line { stroke: var(--ink); stroke-width: 1; opacity: .06; }
 
 /* -------------------------------------------------------------

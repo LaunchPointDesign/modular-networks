@@ -22,6 +22,19 @@
     toggle.setAttribute('aria-expanded', 'false');
   }));
 
+  /* ---------- Same-page links without persistent hash ---------- */
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (event) => {
+      const hash = link.getAttribute('href');
+      if (!hash || hash === '#') return;
+      const target = hash === '#top' ? document.documentElement : document.querySelector(hash);
+      if (!target) return;
+      event.preventDefault();
+      target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      history.replaceState(null, '', location.pathname + location.search);
+    });
+  });
+
   /* ---------- Section active in nav ---------- */
   const sectionIds = ['process','solutions','about','vision','contact'];
   const linkMap = new Map(
