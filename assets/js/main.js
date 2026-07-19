@@ -13,14 +13,30 @@
   /* ---------- Mobile menu ---------- */
   const toggle = document.getElementById('navToggle');
   const menu = document.getElementById('mobileMenu');
+  const setMenuOpen = (open) => {
+    menu?.classList.toggle('is-open', open);
+    nav?.classList.toggle('is-menu-open', open);
+    toggle?.setAttribute('aria-expanded', String(open));
+    toggle?.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    menu?.setAttribute('aria-hidden', String(!open));
+  };
   toggle?.addEventListener('click', () => {
-    const open = menu.classList.toggle('is-open');
-    toggle.setAttribute('aria-expanded', String(open));
+    const open = !menu.classList.contains('is-open');
+    setMenuOpen(open);
   });
   menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    menu.classList.remove('is-open');
-    toggle.setAttribute('aria-expanded', 'false');
+    setMenuOpen(false);
   }));
+  document.addEventListener('click', (event) => {
+    if (!menu?.classList.contains('is-open')) return;
+    if (nav?.contains(event.target)) return;
+    setMenuOpen(false);
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape' || !menu?.classList.contains('is-open')) return;
+    setMenuOpen(false);
+    toggle?.focus();
+  });
 
   /* ---------- Same-page links without persistent hash ---------- */
   document.querySelectorAll('a[href^="#"]').forEach(link => {

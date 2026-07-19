@@ -62,12 +62,16 @@
       </a>
     </nav>
 
-    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <path class="nav-toggle-line nav-toggle-line-top" d="M3 6h18"/>
+        <path class="nav-toggle-line nav-toggle-line-mid" d="M3 12h18"/>
+        <path class="nav-toggle-line nav-toggle-line-bottom" d="M3 18h18"/>
+      </svg>
     </button>
   </div>
 
-  <div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
     <a href="#process">Services</a>
     <a href="#solutions">Scenarios</a>
     <a href="#about">About</a>
