@@ -41,6 +41,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="assets/css/styles.css">
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
 </head>
 
 <body>
@@ -239,15 +240,19 @@
   </div>
 </section>
 
-<section class="section section-soft" id="solutions" aria-labelledby="sol-h">
-  <div class="container">
+<section class="section-soft trace" id="solutions" aria-labelledby="sol-h">
+  <div class="trace-wrap" id="traceWrap">
+  <div class="trace-pin" id="tracePin">
+  <canvas class="trace-canvas" id="traceCanvas" aria-hidden="true"></canvas>
+  <div class="container trace-head" id="traceHead">
     <div class="section-head">
       <span class="eyebrow">Design scenarios</span>
       <h2 id="sol-h" class="h-section">Realistic environments built around real business challenges.</h2>
       <p class="lead">These case studies connect the design scenarios to public GitHub repositories with topology files, configurations, screenshots, and validation notes.</p>
     </div>
+  </div>
 
-    <div class="sol-grid">
+    <div class="trace-cards" id="traceCards">
       <article class="sol-card">
         <div class="sol-header"><div><div class="sol-scene">Scenario · 01</div><h3 class="sol-title">Theater Production Network</h3></div><div class="sol-visual" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="M8 5v14M16 5v14M4 9h4M16 9h4M4 15h4M16 15h4"/></svg></div></div>
         <p class="sol-summary">A temporary production environment built for a traveling theater company operating inside a shared venue.</p>
@@ -280,6 +285,10 @@
         <a class="sol-link" href="https://github.com/MauriceBurt/MoCo-Family-Center-Network-Design" target="_blank" rel="noopener noreferrer">View medical practice repository <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg></a>
       </article>
     </div>
+    <div class="trace-progress" id="traceProgress" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="trace-hud" id="traceHud" aria-hidden="true"><div class="trace-hud-idx"><span id="traceIdx">01</span><span class="of">/ 04</span></div><div class="trace-hud-title" id="traceTitle"></div><div class="trace-hud-coord" id="traceCoord"></div></div>
+    <div class="trace-hint" aria-hidden="true"><span class="bar"></span>Scroll to trace the network<span class="bar"></span></div>
+  </div>
   </div>
 </section>
 
@@ -385,5 +394,6 @@
 </footer>
 
 <script src="assets/js/main.js" defer></script>
+<script type="module" src="assets/js/trace.js"></script>
 </body>
 </html>
