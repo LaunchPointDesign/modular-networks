@@ -237,7 +237,8 @@ import * as THREE from 'three';
   const frame = (now) => {
     const dt = Math.min(0.05, (now - last) / 1000); last = now;
     if (!section.classList.contains('is-3d')) { running = false; return; }
-    p += (pTarget - p) * (1 - Math.exp(-dt * 5.5));
+    // scroll progress eases toward its target (slower rate = more cinematic glide)
+    p += (pTarget - p) * (1 - Math.exp(-dt * 3.2));
     mouse.x += (mouse.tx - mouse.x) * (1 - Math.exp(-dt * 3)); mouse.y += (mouse.ty - mouse.y) * (1 - Math.exp(-dt * 3));
     const st = stateAt(p), time = now / 1000;
 
@@ -281,7 +282,7 @@ import * as THREE from 'three';
     desiredPos.copy(follow).add(offset);
     // look slightly ahead of the head, offset toward the card side so the text gets room
     desiredLook.copy(follow).add(lookOff.set(Math.cos(theta) * 0.9, -0.05 - mouse.y * 0.12, -Math.sin(theta) * 0.9));
-    const k = 1 - Math.exp(-dt * 3.2);
+    const k = 1 - Math.exp(-dt * 2.3); // camera drifts behind the scroll point
     camPos.lerp(desiredPos, k); camLook.lerp(desiredLook, k);
     camera.position.copy(camPos); camera.lookAt(camLook);
 

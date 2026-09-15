@@ -224,30 +224,59 @@
       wrap.style.height = (window.innerHeight + delta) + 'px';
     };
 
-    const update = () => {
+    // Eased scroll state: the scroll handler only records the target progress;
+    // a rAF loop glides the displayed progress toward it (exponential ease),
+    // so the track drifts instead of snapping 1:1 with the scrollbar.
+    let pTarget = 0, pDisp = 0, procRunning = false, procLast = 0;
+
+    const readTarget = () => {
       if (isMobile()) return;
       const rect = wrap.getBoundingClientRect();
       const total = wrap.offsetHeight - window.innerHeight;
       const scrolled = Math.min(Math.max(-rect.top, 0), total);
-      const p = total > 0 ? scrolled / total : 0;
+      pTarget = total > 0 ? scrolled / total : 0;
+    };
+
+    const renderProc = (now) => {
+      if (isMobile()) { procRunning = false; return; } // resized mid-glide: stop, layout() already cleared the track
+      const dt = Math.min(0.05, (now - procLast) / 1000); procLast = now;
+      pDisp += (pTarget - pDisp) * (1 - Math.exp(-dt * 4.2));
+      if (Math.abs(pTarget - pDisp) < 0.0004) pDisp = pTarget;
       const vw = window.innerWidth;
       const trackWidth = track.scrollWidth;
       const delta = Math.max(0, trackWidth - vw + 40);
-      track.style.transform = `translate3d(${-p * delta}px,0,0)`;
+      track.style.transform = `translate3d(${(-pDisp * delta).toFixed(1)}px,0,0)`;
 
-      // active step
+      // active step + dots follow the eased position, so UI matches the screen
       const n = steps.length;
-      const idx = Math.min(n - 1, Math.floor(p * n + 0.0001));
+      const idx = Math.min(n - 1, Math.floor(pDisp * n + 0.0001));
       steps.forEach((s, i) => s.classList.toggle('is-active', i === idx));
       progressDots.forEach((d, i) => d.classList.toggle('is-active', i <= idx));
+
+      if (pDisp !== pTarget) requestAnimationFrame(renderProc);
+      else procRunning = false;
     };
 
-    window.addEventListener('resize', () => { layout(); update(); });
-    window.addEventListener('scroll', update, { passive: true });
+    const kickProc = () => {
+      if (procRunning || isMobile()) return;
+      procRunning = true; procLast = performance.now();
+      requestAnimationFrame(renderProc);
+    };
+
+    const onProcScroll = () => {
+      readTarget();
+      if (reduce) pDisp = pTarget; // reduced motion: snap, no glide
+      kickProc();
+    };
+
+    window.addEventListener('resize', () => { layout(); readTarget(); pDisp = pTarget; kickProc(); });
+    window.addEventListener('scroll', onProcScroll, { passive: true });
     // after fonts load, recompute
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { layout(); update(); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { layout(); readTarget(); pDisp = pTarget; kickProc(); });
     layout();
-    update();
+    readTarget();
+    pDisp = pTarget;
+    kickProc();
   })();
 
 })();
