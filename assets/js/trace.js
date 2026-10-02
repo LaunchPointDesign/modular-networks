@@ -305,10 +305,12 @@ import * as THREE from 'three';
   const io = new IntersectionObserver((entries) => { entries.forEach(e => { active = e.isIntersecting; if (active) kick(); }); }, { rootMargin: '25% 0px 25% 0px' });
   io.observe(wrap);
   addEventListener('scroll', readScroll, { passive: true });
-  addEventListener('resize', () => { applyMode(); resize(); readScroll(); kick(); });
+  const announce = () => document.dispatchEvent(new Event('mn:layout')); // section height changed: motion layer re-measures
+  addEventListener('resize', () => { applyMode(); resize(); readScroll(); kick(); announce(); });
   if (applyMode()) {
     offset.set(2.4, 1.7, 11); camPos.copy(v3(W[0])).add(offset); camLook.copy(v3(W[0]));
     camera.position.copy(camPos); camera.lookAt(camLook);
     if (onScreen()) kick();
   }
+  announce();
 })();

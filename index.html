@@ -36,12 +36,25 @@
   })();
 </script>
 
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
+<script>
+  /* Motion gate: hides animated elements only until the motion module has set
+     their start states. Never applied under reduced motion, and released after
+     4.5s so a blocked CDN can never leave content invisible. */
+  (() => {
+    const d = document.documentElement;
+    d.classList.add('js');
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    d.classList.add('motion-pending');
+    setTimeout(() => d.classList.remove('motion-pending'), 4500);
+  })();
+</script>
 <link rel="stylesheet" href="assets/css/styles.css">
-<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/","gsap":"https://unpkg.com/gsap@3.15.0/index.js","gsap/ScrollTrigger":"https://unpkg.com/gsap@3.15.0/ScrollTrigger.js","gsap/SplitText":"https://unpkg.com/gsap@3.15.0/SplitText.js","lenis":"https://unpkg.com/lenis@1.3.26/dist/lenis.mjs"}}</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JL8NFDJ3N"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -60,6 +73,8 @@
 
 <body>
 
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="#top" class="brand" aria-label="Modular Networks, home">
@@ -67,6 +82,7 @@
     </a>
 
     <nav class="nav-links" aria-label="Primary">
+      <span class="nav-indicator" id="navIndicator" aria-hidden="true"></span>
       <a class="nav-link" href="#process" data-link="process">Services</a>
       <a class="nav-link" href="#solutions" data-link="solutions">Scenarios</a>
       <a class="nav-link" href="#about" data-link="about">About</a>
@@ -103,15 +119,15 @@
   </div>
 
   <div class="container hero-inner">
-    <div class="reveal in">
+    <div data-hero="eyebrow">
       <span class="eyebrow">Network consulting and infrastructure support</span>
     </div>
-    <h1 id="hero-h" class="display reveal delay-1 in">Networks built around business outcomes.</h1>
-    <p class="lead reveal delay-2 in">
+    <h1 id="hero-h" class="display" data-hero="title">Networks built around business outcomes.</h1>
+    <p class="lead" data-hero="lead">
       Modular Networks helps growing businesses build reliable, secure, and scalable network foundations without needing to become networking experts themselves.
     </p>
 
-    <div class="hero-actions reveal delay-3 in">
+    <div class="hero-actions" data-hero="actions">
       <a class="btn btn-primary" href="#contact">
         Book Evaluation
         <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -119,7 +135,7 @@
       <a class="btn btn-ghost" href="#process">Explore services</a>
     </div>
 
-    <dl class="hero-meta reveal delay-4 in">
+    <dl class="hero-meta" data-hero="meta">
       <div>
         <dt>Core Work</dt>
         <dd>Evaluation, design, deployment, monitoring, and support</dd>
@@ -139,13 +155,13 @@
 <section class="section" id="guided" aria-labelledby="guided-h">
   <div class="container">
     <div class="section-head">
-      <span class="eyebrow">Common signals</span>
-      <h2 id="guided-h" class="h-section">Network problems usually show up as business friction.</h2>
-      <p class="lead">Slow applications, unreliable Wi-Fi, devices that will not communicate, security concerns, expansion challenges, and poor visibility often trace back to the network underneath the business.</p>
+      <span class="eyebrow" data-m="fade">Common signals</span>
+      <h2 id="guided-h" class="h-section" data-split="lines">Network problems usually show up as business friction.</h2>
+      <p class="lead" data-split="lines">Slow applications, unreliable Wi-Fi, devices that will not communicate, security concerns, expansion challenges, and poor visibility often trace back to the network underneath the business.</p>
     </div>
 
     <div class="guided-grid" role="list">
-      <button class="guided-card" role="listitem" aria-expanded="false" data-guided data-anchor="#process">
+      <button class="guided-card" data-m="item" role="listitem" aria-expanded="false" data-guided data-anchor="#process">
         <div class="guided-top">
           <span class="guided-icon" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l3-8 4 16 3-8h5"/></svg></span>
           <span class="guided-num">01</span>
@@ -157,7 +173,7 @@
         <span class="guided-link">See services <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </button>
 
-      <button class="guided-card" role="listitem" aria-expanded="false" data-guided data-anchor="#process">
+      <button class="guided-card" data-m="item" role="listitem" aria-expanded="false" data-guided data-anchor="#process">
         <div class="guided-top">
           <span class="guided-icon" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg></span>
           <span class="guided-num">02</span>
@@ -169,7 +185,7 @@
         <span class="guided-link">See services <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </button>
 
-      <button class="guided-card" role="listitem" aria-expanded="false" data-guided data-anchor="#solutions">
+      <button class="guided-card" data-m="item" role="listitem" aria-expanded="false" data-guided data-anchor="#solutions">
         <div class="guided-top">
           <span class="guided-icon" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M20 19V5M4 12h16M8 5v14M16 5v14"/></svg></span>
           <span class="guided-num">03</span>
@@ -181,7 +197,7 @@
         <span class="guided-link">See scenarios <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </button>
 
-      <button class="guided-card" role="listitem" aria-expanded="false" data-guided data-anchor="#contact">
+      <button class="guided-card" data-m="item" role="listitem" aria-expanded="false" data-guided data-anchor="#contact">
         <div class="guided-top">
           <span class="guided-icon" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></span>
           <span class="guided-num">04</span>
@@ -201,8 +217,8 @@
     <div class="process-pin">
       <div class="process-header">
         <div>
-          <span class="eyebrow">What Modular Networks does</span>
-          <h2 id="process-h" class="h-section" style="margin-top:14px">Four practical areas of network work.</h2>
+          <span class="eyebrow" data-m="fade">What Modular Networks does</span>
+          <h2 id="process-h" class="h-section" data-split="lines" style="margin-top:14px">Four practical areas of network work.</h2>
         </div>
         <div class="process-progress" id="processProgress" aria-hidden="true">
           <span class="dot is-active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
@@ -260,9 +276,9 @@
   <canvas class="trace-canvas" id="traceCanvas" aria-hidden="true"></canvas>
   <div class="container trace-head" id="traceHead">
     <div class="section-head">
-      <span class="eyebrow">Design scenarios</span>
-      <h2 id="sol-h" class="h-section">Realistic environments built around real business challenges.</h2>
-      <p class="lead">These case studies connect the design scenarios to public GitHub repositories with topology files, configurations, screenshots, and validation notes.</p>
+      <span class="eyebrow" data-m="fade">Design scenarios</span>
+      <h2 id="sol-h" class="h-section" data-split="lines">Realistic environments built around real business challenges.</h2>
+      <p class="lead" data-split="lines">These case studies connect the design scenarios to public GitHub repositories with topology files, configurations, screenshots, and validation notes.</p>
     </div>
   </div>
 
@@ -309,12 +325,12 @@
 <section class="section philosophy" aria-labelledby="philosophy-h">
   <div class="container philosophy-grid">
     <div>
-      <span class="eyebrow">Design philosophy</span>
-      <h2 id="philosophy-h" class="h-section">The network is not the product. The outcome is the product.</h2>
+      <span class="eyebrow" data-m="fade">Design philosophy</span>
+      <h2 id="philosophy-h" class="h-section" data-split="scrub">The network is not the product. The outcome is the product.</h2>
     </div>
     <div class="philosophy-copy">
-      <p>Every design starts with one question: what problem is the business trying to solve?</p>
-      <p>Every switch, access point, VLAN, security policy, and design decision should support a business objective. Clients are not buying hardware; they are buying reliable operations, secure access, scalability, and confidence.</p>
+      <p data-split="lines">Every design starts with one question: what problem is the business trying to solve?</p>
+      <p data-split="lines">Every switch, access point, VLAN, security policy, and design decision should support a business objective. Clients are not buying hardware; they are buying reliable operations, secure access, scalability, and confidence.</p>
     </div>
   </div>
 </section>
@@ -322,13 +338,13 @@
 <section class="section section-soft promise" aria-labelledby="promise-h">
   <div class="container">
     <div class="section-head">
-      <span class="eyebrow">Client promise</span>
-      <h2 id="promise-h" class="h-section">What working with Modular Networks should feel like.</h2>
+      <span class="eyebrow" data-m="fade">Client promise</span>
+      <h2 id="promise-h" class="h-section" data-split="lines">What working with Modular Networks should feel like.</h2>
     </div>
     <div class="promise-grid">
-      <article class="promise-card"><span class="promise-num">01</span><h3>Clarity</h3><p>Complex networking concepts explained in practical business language.</p></article>
-      <article class="promise-card"><span class="promise-num">02</span><h3>Reliability</h3><p>Infrastructure designed with stability and operational continuity in mind.</p></article>
-      <article class="promise-card"><span class="promise-num">03</span><h3>Partnership</h3><p>A relationship focused on long-term success rather than one-time transactions.</p></article>
+      <article class="promise-card" data-m="item"><span class="promise-num">01</span><h3>Clarity</h3><p>Complex networking concepts explained in practical business language.</p></article>
+      <article class="promise-card" data-m="item"><span class="promise-num">02</span><h3>Reliability</h3><p>Infrastructure designed with stability and operational continuity in mind.</p></article>
+      <article class="promise-card" data-m="item"><span class="promise-num">03</span><h3>Partnership</h3><p>A relationship focused on long-term success rather than one-time transactions.</p></article>
     </div>
   </div>
 </section>
@@ -336,23 +352,23 @@
 <section class="section" id="about" aria-labelledby="about-h">
   <div class="container about-grid">
     <div class="about-copy">
-      <span class="eyebrow" style="margin-bottom:18px; display:inline-flex">Founder context</span>
-      <h2 id="about-h" class="h-section" style="margin:18px 0 28px">Built from hands-on support, infrastructure work, and real troubleshooting.</h2>
-      <p>Modular Networks was founded by Maurice Burt, who works in IT and has spent the last several years building a technical foundation through hands-on support, infrastructure work, asset management, networking studies, and real-world troubleshooting.</p>
-      <p>His path into networking was not traditional. It started with solving problems wherever they existed, then grew into a deeper interest in the systems underneath those problems.</p>
-      <p>The more Maurice saw business issues trace back to slow applications, unreliable Wi-Fi, devices that would not communicate, security concerns, expansion challenges, and poor visibility, the clearer the mission became: design environments that simply work.</p>
+      <span class="eyebrow" data-m="fade" style="margin-bottom:18px; display:inline-flex">Founder context</span>
+      <h2 id="about-h" class="h-section" data-split="lines" style="margin:18px 0 28px">Built from hands-on support, infrastructure work, and real troubleshooting.</h2>
+      <p data-split="lines">Modular Networks was founded by Maurice Burt, who works in IT and has spent the last several years building a technical foundation through hands-on support, infrastructure work, asset management, networking studies, and real-world troubleshooting.</p>
+      <p data-split="lines">His path into networking was not traditional. It started with solving problems wherever they existed, then grew into a deeper interest in the systems underneath those problems.</p>
+      <p data-split="lines">The more Maurice saw business issues trace back to slow applications, unreliable Wi-Fi, devices that would not communicate, security concerns, expansion challenges, and poor visibility, the clearer the mission became: design environments that simply work.</p>
     </div>
 
     <aside class="founder-card" aria-label="Maurice Burt profile and networking credential">
-      <div class="founder-photo-wrap">
+      <div class="founder-photo-wrap" data-m="fade">
         <img class="founder-photo" src="assets/images/MauriceHeadShot.jpeg" alt="Portrait of Maurice Burt, founder of Modular Networks" width="800" height="800" loading="lazy">
       </div>
-      <div class="founder-card-copy">
+      <div class="founder-card-copy" data-m="fade">
         <p class="founder-kicker">Maurice Burt</p>
         <h3>Founder, Modular Networks</h3>
         <p>Focused on translating complex networking concepts into practical business outcomes: reliable connectivity, secure access, continuity, scalable growth, and operational confidence.</p>
       </div>
-      <figure class="certificate-card">
+      <figure class="certificate-card" data-m="fade">
         <img src="assets/images/CiscoCertifiedNetwork AssociateCertificate.jpeg" alt="Cisco Certified Network Associate certificate" width="792" height="612" loading="lazy">
         <figcaption>Cisco Certified Network Associate certificate</figcaption>
       </figure>
@@ -363,23 +379,23 @@
 <section class="section-ink vision" id="vision" aria-labelledby="vision-h">
   <div class="container vision-grid">
     <div>
-      <span class="eyebrow">Long-term vision</span>
-      <h2 id="vision-h" class="h-section" style="margin-top:14px">Build expertise, trust, and results first. Everything else follows.</h2>
+      <span class="eyebrow" data-m="fade">Long-term vision</span>
+      <h2 id="vision-h" class="h-section" data-split="scrub" style="margin-top:14px">Build expertise, trust, and results first. Everything else follows.</h2>
     </div>
     <div class="vision-copy">
-      <p>The long-term vision for Modular Networks extends beyond traditional networking into advanced monitoring, automation, AI-assisted network operations, and simplified infrastructure management.</p>
-      <p>One future initiative is Monet AI: a networking-focused AI assistant envisioned to help bridge the gap between business owners, technicians, and infrastructure systems.</p>
-      <p class="muted">That vision remains future-facing. Today's focus is network evaluation, design, deployment, monitoring, and support.</p>
+      <p data-split="lines">The long-term vision for Modular Networks extends beyond traditional networking into advanced monitoring, automation, AI-assisted network operations, and simplified infrastructure management.</p>
+      <p data-split="lines">One future initiative is Monet AI: a networking-focused AI assistant envisioned to help bridge the gap between business owners, technicians, and infrastructure systems.</p>
+      <p class="muted" data-split="lines">That vision remains future-facing. Today's focus is network evaluation, design, deployment, monitoring, and support.</p>
     </div>
   </div>
 </section>
 
 <section class="cta-final" id="contact" aria-labelledby="cta-h">
   <div class="container">
-    <span class="eyebrow" style="color:rgba(255,255,255,.6); justify-content:center; display:inline-flex">Next step</span>
-    <h2 id="cta-h" class="h-section" style="margin-top:16px">Start with a network evaluation.</h2>
-    <p class="lead">A structured evaluation is the clearest way to understand the environment, identify the business problem, and decide what should happen next.</p>
-    <div class="cta-final-actions">
+    <span class="eyebrow" data-m="fade" style="color:rgba(255,255,255,.6); justify-content:center; display:inline-flex">Next step</span>
+    <h2 id="cta-h" class="h-section" data-split="lines" style="margin-top:16px">Start with a network evaluation.</h2>
+    <p class="lead" data-split="lines">A structured evaluation is the clearest way to understand the environment, identify the business problem, and decide what should happen next.</p>
+    <div class="cta-final-actions" data-m="fade">
       <a class="btn btn-primary" href="mailto:maurice.r.burt@gmail.com?subject=Book%20Network%20Evaluation">Book Evaluation <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       <a class="btn btn-ghost" href="mailto:maurice.r.burt@gmail.com">Send a note</a>
     </div>
@@ -390,7 +406,7 @@
 
 <footer class="footer">
   <div class="container footer-inner">
-    <div class="footer-left">
+    <div class="footer-left" data-m="fade">
       <img class="footer-logo" src="assets/images/Transparent.svg" alt="Modular Networks" width="150" height="150">
     </div>
     <div class="footer-links" aria-label="Footer contact links">
@@ -408,6 +424,7 @@
 </footer>
 
 <script src="assets/js/main.js" defer></script>
+<script type="module" src="assets/js/motion/index.js"></script>
 <script type="module" src="assets/js/trace.js"></script>
 </body>
 </html>
