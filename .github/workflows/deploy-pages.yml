@@ -1,0 +1,46 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches:
+      - main
+      - "preview/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  deployments: write
+
+concurrency:
+  group: deploy-pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Assemble dist
+        run: |
+          rm -rf dist
+          mkdir dist
+          # Publish tracked site files only. .git is not in the index; the
+          # pathspec also drops .github, .gitignore, README.md, and LICENSE.
+          git ls-files -z -- . \
+            ':!.git' \
+            ':!.github' \
+            ':!.gitignore' \
+            ':!README.md' \
+            ':!LICENSE' \
+            | xargs -0 cp --parents -t dist
+
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # main -> production. preview/** and workflow_dispatch use the ref name.
+          command: pages deploy dist --project-name=modular-networks --branch=${{ github.ref_name }} --commit-dirty=true
